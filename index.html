@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LogicaGuard 2026 - Penganalisis Logika Kritis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body class="bg-slate-100 min-h-screen font-sans antialiased text-slate-900">
+
+    <div class="max-w-3xl mx-auto py-10 px-4">
+        <div class="text-center mb-10">
+            <div class="inline-block bg-indigo-600 text-white px-4 py-1 rounded-full text-xs font-bold uppercase tracking-widest mb-4 shadow-lg">
+                Proyek Dialektika 2026
+            </div>
+            <h1 class="text-4xl font-black text-slate-800 tracking-tight">🛡️ LogicaGuard</h1>
+            <p class="mt-3 text-slate-600 max-w-lg mx-auto italic">
+                "Memisahkan kekuasaan antara emosi, otoritas, dan kebenaran demi kewarasan di dunia yang gila." 
+                <span class="block font-bold not-italic mt-1">— Montesquieu Digital</span>
+            </p>
+        </div>
+
+        <div class="bg-white rounded-3xl shadow-2xl border border-slate-200 overflow-hidden">
+            <div class="p-8 border-b border-slate-100">
+                <div class="flex items-center gap-2 mb-4">
+                    <i class="fa-solid fa-scale-balanced text-indigo-500"></i>
+                    <h2 class="text-sm font-bold text-slate-500 uppercase tracking-widest">Ruang Uji Legislatif</h2>
+                </div>
+                <textarea id="inputText" 
+                    class="w-full p-5 bg-slate-50 border-2 border-slate-200 rounded-2xl focus:ring-4 focus:ring-indigo-100 focus:border-indigo-500 outline-none transition-all text-lg leading-relaxed shadow-inner" 
+                    rows="5" 
+                    placeholder="Contoh: Dia pasti benar karena dia lulusan pesantren ternama..."></textarea>
+                
+                <button onclick="analyzeLogic()" 
+                    class="w-full mt-6 bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 rounded-2xl transition-all transform active:scale-95 shadow-xl flex items-center justify-center gap-3 text-lg">
+                    <i class="fa-solid fa-gavel"></i> Jalankan Analisis Yudikatif
+                </button>
+            </div>
+
+            <div id="resultSection" class="hidden p-8 bg-white transition-all">
+                <div class="flex items-center justify-between mb-6">
+                    <h3 class="text-xl font-extrabold text-slate-800">Vonis Pikiran:</h3>
+                    <div id="sentimentBadge"></div>
+                </div>
+
+                <div id="findings" class="space-y-4">
+                    </div>
+
+                <div class="mt-8 p-4 bg-indigo-50 rounded-2xl border border-indigo-100 italic text-indigo-800 text-sm">
+                    <strong>Pesan Montesquieu:</strong> "Jangan biarkan gelar atau emosi menguasai parlemen otakmu. Periksalah bukti, bukan siapa yang membawa bukti."
+                </div>
+            </div>
+        </div>
+
+        <p class="text-center mt-8 text-slate-400 text-xs uppercase tracking-widest font-semibold">
+            &copy; 2026 Intelijensi Kritis - Ijaj & Montesquieu
+        </p>
+    </div>
+
+    <script>
+        const fallacies = [
+            {
+                name: "Appeal to Authority (Pemujaan Otoritas)",
+                description: "Menyimpulkan sesuatu benar hanya karena status, lulusan, atau gelar seseorang tanpa argumen objektif.",
+                keywords: ["lulusan", "pesantren", "gelar", "sarjana", "profesor", "ternama", "terkenal", "kata beliau", "alumni"],
+                color: "border-blue-500 bg-blue-50 text-blue-900",
+                icon: "fa-award"
+            },
+            {
+                name: "Ad Hominem (Serangan Personal)",
+                description: "Menyerang karakter atau pribadi orangnya, bukan isi pembicaraannya.",
+                keywords: ["bodoh", "tolol", "penipu", "dasar kamu", "mukanya saja", "siapa sih dia"],
+                color: "border-red-500 bg-red-50 text-red-900",
+                icon: "fa-user-slash"
+            },
+            {
+                name: "Circular Reasoning (Muter-Muter)",
+                description: "Argumen yang berputar-putar tanpa bukti baru; menganggap premis sebagai bukti.",
+                keywords: ["paling benar", "sudah pasti benar", "karena memang begitu", "itulah kebenarannya"],
+                color: "border-emerald-500 bg-emerald-50 text-emerald-900",
+                icon: "fa-rotate"
+            },
+            {
+                name: "False Dilemma (Hitam-Putih)",
+                description: "Memaksa hanya ada dua pilihan ekstrem, padahal ada jalan tengah.",
+                keywords: ["kalau tidak", "pilihannya cuma", "hanya ada dua", "musuh atau teman"],
+                color: "border-orange-500 bg-orange-50 text-orange-900",
+                icon: "fa-split"
+            }
+        ];
+
+        function analyzeLogic() {
+            const rawText = document.getElementById('inputText').value;
+            const text = rawText.toLowerCase();
+            const resultSection = document.getElementById('resultSection');
+            const findingsDiv = document.getElementById('findings');
+            const sentimentBadge = document.getElementById('sentimentBadge');
+            
+            if (!text.trim()) {
+                alert("Montesquieu butuh teks untuk dianalisis, Ijaj!");
+                return;
+            }
+
+            findingsDiv.innerHTML = '';
+            let foundAny = false;
+
+            // 1. Analisis Fallacy
+            fallacies.forEach(f => {
+                const foundKeywords = f.keywords.filter(word => text.includes(word));
+                if (foundKeywords.length > 0) {
+                    foundAny = true;
+                    const card = `
+                        <div class="border-l-8 ${f.color} p-5 rounded-2xl shadow-sm animate-fade-in mb-4">
+                            <div class="flex items-start gap-4">
+                                <div class="mt-1"><i class="fa-solid ${f.icon} text-xl"></i></div>
+                                <div>
+                                    <h4 class="font-black uppercase text-sm tracking-tight">${f.name}</h4>
+                                    <p class="text-sm mt-1 leading-relaxed opacity-90">${f.description}</p>
+                                    <div class="mt-3 flex flex-wrap gap-2">
+                                        ${foundKeywords.map(k => `<span class="bg-white bg-opacity-50 px-2 py-1 rounded text-xs font-bold border border-current italic">"${k}"</span>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    findingsDiv.innerHTML += card;
+                }
+            });
+
+            // 2. Analisis Sentimen Sederhana
+            const triggerWords = ["pasti", "mutlak", "harus", "pokoknya", "tidak mungkin salah"];
+            const isBiased = triggerWords.some(w => text.includes(w));
+            
+            if (isBiased) {
+                sentimentBadge.innerHTML = `<span class="bg-red-100 text-red-700 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-tighter shadow-sm border border-red-200"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Terindikasi Bias</span>`;
+            } else {
+                sentimentBadge.innerHTML = `<span class="bg-green-100 text-green-700 text-[10px] px-3 py-1 rounded-full font-black uppercase tracking-tighter shadow-sm border border-green-200"><i class="fa-solid fa-check mr-1"></i> Netral</span>`;
+            }
+
+            if (!foundAny) {
+                findingsDiv.innerHTML = `
+                    <div class="text-center py-10">
+                        <i class="fa-solid fa-shield-halved text-5xl text-slate-200 mb-4"></i>
+                        <h4 class="font-bold text-slate-800 text-lg">Logika Masih Waras</h4>
+                        <p class="text-slate-500 text-sm">Tidak ditemukan pola sesat pikir umum dalam paragraf ini.</p>
+                    </div>
+                `;
+            }
+
+            resultSection.classList.remove('hidden');
+            resultSection.scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+    </style>
+</body>
+</html>
